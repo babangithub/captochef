@@ -1,12 +1,11 @@
 #!/bin/sh
 
-ret=0           # リターンコード
+RET=0           # リターンコード
 SRC_DIR="/root"
 SRC_FIL=
 COM_DIR=
 
-
-YUM="wget zlib-devel"
+YUM="wget zlib-devel gcc openssl-devel"
 
 for i in ${YUM}; do
         rpm -qa | grep ^${i} > /dev/null 2>&1
@@ -21,7 +20,7 @@ done
 
 # rubyファイル設定
 if [ ! -f ${SRC_DIR}/ruby*gz ]; then
-        echo "file not found"
+        echo "ruby srouce file not found"
         exit 8
 else
         SRC_FIL=`ls -1 ${SRC_DIR}/ruby*gz`
@@ -36,7 +35,7 @@ make install
 
 gem contents chef > /dev/null 2>&1
 RET=$?
-if [ ${RET} -eq 0 ]; then
+if [ ${RET} -eq 1 ]; then
         gem install chef
 fi
 
