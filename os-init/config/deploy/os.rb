@@ -1,11 +1,12 @@
 load './config/deploy/develop.rb'
 
 namespace :os do
-                # ユーザ名指定
-                user = 'chefuser'
+        # ユーザ名指定
+        user = 'chefuser'
 
-                # パスワード指定
-                password = 'password'
+        # パスワード指定
+        password = 'password'
+		
 	desc "chef install"
 	task :useradd do
 		# 乱数作成
@@ -17,8 +18,12 @@ namespace :os do
 
 			# ユーザ追加
 			execute "useradd -p '#{shadow_hash}' #{user}"
+
+			# namespaceが[os]のtaskが[key_set]を実行
+			invoke "os:key_set"
 		end
 	end
+
 	task :key_set do
 		src = '/opt/capistrano/manage/files/root/.ssh/authorized_keys'
 		dir = '/root/.ssh'
